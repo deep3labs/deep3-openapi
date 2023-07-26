@@ -1,0 +1,14 @@
+{
+  "name": "deep3-openapi",
+  "version": "v0.0.2",
+  "scripts": {
+    "generate": "npx @openapitools/openapi-generator-cli batch config/*.yaml",
+    "generate:node": "npx @openapitools/openapi-generator-cli batch config/node.yaml",
+    "generate:python": "npx @openapitools/openapi-generator-cli batch config/python.yaml"
+  },
+  "keywords": [],
+  "author": "Deep3 Labs",
+  "devDependencies": {
+    "@openapitools/openapi-generator-cli": "^2.7.0"
+  }
+}

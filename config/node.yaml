@@ -1,0 +1,7 @@
+inputSpec: openapi.yaml
+outputDir: ../deep3-node-client
+templateDir: templates/typescript-fetch
+generatorName: typescript-fetch
+additionalProperties:
+  npmName: '@deep3labs/node-client'
+  supportsES6: true

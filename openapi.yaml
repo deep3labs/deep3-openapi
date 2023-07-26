@@ -1,0 +1,218 @@
+openapi: 3.0.3
+info:
+  title: Deep3 Labs API
+  description: ''
+  version: v0.0.2
+components:
+  securitySchemes:
+    ApiKey:
+      type: apiKey
+      name: x-api-key
+      in: header
+  schemas:
+    GetChainsResult:
+      type: object
+      properties:
+        chainId:
+          type: number
+        name:
+          type: string
+        models:
+          type: array
+          items:
+            type: string
+      required:
+        - chainId
+        - name
+        - models
+    GetModelsResult:
+      type: object
+      properties:
+        name:
+          type: string
+        chains:
+          type: array
+          items:
+            type: number
+      required:
+        - name
+        - chains
+    model:
+      type: string
+    chainId:
+      type: number
+    publicAddress:
+      type: string
+      pattern: ^0x[a-fA-F0-9]{40}$
+    GetPredictionResult:
+      type: object
+      properties:
+        code:
+          type: number
+        result:
+          type: number
+      required:
+        - code
+    GetHodlerResult:
+      type: object
+      properties:
+        code:
+          type: number
+        result:
+          type: number
+      required:
+        - code
+security:
+  - ApiKey: []
+paths:
+  /chains:
+    get:
+      summary: Get currently supported chains and the active machine learning models
+      description: Will return currently supported chains
+      operationId: getChains
+      parameters: []
+      tags:
+        - Deep3
+      responses:
+        '200':
+          description: A list of chain objects
+          content:
+            application/json:
+              examples:
+                success:
+                  summary: A successful response
+                  description: >-
+                    An array of currently supported chains and the machine
+                    learning models that support them will be returned
+                  value:
+                    - chainId: 1
+                      name: Ethereum Mainnet
+                      models:
+                        - HODL_class_v1_0
+              schema:
+                $ref: '#/components/schemas/GetChainsResult'
+  /models:
+    get:
+      summary: Get active machine learning models and the chains they support
+      description: Will return active machine learning models
+      operationId: getModels
+      parameters: []
+      tags:
+        - Deep3
+      responses:
+        '200':
+          description: A list of model objects
+          content:
+            application/json:
+              examples:
+                success:
+                  summary: A successful response
+                  description: >-
+                    An array of active machine learning models and the chains
+                    they support will be returned
+                  value:
+                    - model: HODL_class_v1_0
+                      chains:
+                        - 1
+              schema:
+                $ref: '#/components/schemas/GetModelsResult'
+  /prediction/{model}/{chainId}/{publicAddress}:
+    get:
+      summary: Get a prediction
+      description: Will return the prediction
+      operationId: getPrediction
+      parameters:
+        - name: model
+          in: path
+          description: The model for the prediction
+          required: true
+          schema:
+            $ref: '#/components/schemas/model'
+        - name: chainId
+          in: path
+          description: The chain id for the prediction
+          required: true
+          schema:
+            $ref: '#/components/schemas/chainId'
+        - name: publicAddress
+          in: path
+          description: The public address to predict
+          required: true
+          schema:
+            $ref: '#/components/schemas/publicAddress'
+      tags:
+        - Deep3
+      responses:
+        '200':
+          description: A prediction object
+          content:
+            application/json:
+              examples:
+                available:
+                  summary: A prediction is available
+                  description: >-
+                    When a prediction is available for the public address it
+                    will return a 200 code and the result
+                  value:
+                    code: 200
+                    result: 0.32
+                unavailable:
+                  summary: A prediction is not available
+                  description: >-
+                    If there is not a prediction for the public address it will
+                    return a 204 code and a null result
+                  value:
+                    code: 204
+                    result: null
+              schema:
+                $ref: '#/components/schemas/GetPredictionResult'
+  /hodler/{chainId}/{publicAddress}:
+    get:
+      summary: Get a Hodler prediction
+      description: Will return the prediction
+      operationId: getHodlerPrediction
+      parameters:
+        - name: chainId
+          in: path
+          description: The chain id for the prediction
+          required: true
+          schema:
+            $ref: '#/components/schemas/chainId'
+        - name: publicAddress
+          in: path
+          description: The public address for the wallet
+          required: true
+          schema:
+            $ref: '#/components/schemas/publicAddress'
+      tags:
+        - Deep3
+      responses:
+        '200':
+          description: A prediction object
+          content:
+            application/json:
+              examples:
+                available:
+                  summary: A prediction is available
+                  description: >-
+                    When a prediction is available for the public address it
+                    will return a 200 code and the result
+                  value:
+                    code: 200
+                    result: 0.32
+                unavailable:
+                  summary: A prediction is not available
+                  description: >-
+                    If there is not a prediction for the public address it will
+                    return a 204 code and a null result
+                  value:
+                    code: 204
+                    result: null
+              schema:
+                $ref: '#/components/schemas/GetHodlerResult'
+servers:
+  - url: https://api.deep3.ai/v0/
+    description: live
+tags:
+  - name: Deep3
+    description: The Deep3 Labs API
