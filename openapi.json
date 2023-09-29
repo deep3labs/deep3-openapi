@@ -3,7 +3,7 @@
   "info": {
     "title": "Deep3 Labs API",
     "description": "",
-    "version": "v0.0.2"
+    "version": "v0.0.3"
   },
   "components": {
     "securitySchemes": {
@@ -14,7 +14,7 @@
       }
     },
     "schemas": {
-      "GetChainsResult": {
+      "ChainsResponse": {
         "type": "object",
         "properties": {
           "chainId": {
@@ -36,7 +36,7 @@
           "models"
         ]
       },
-      "GetModelsResult": {
+      "ModelsResponse": {
         "type": "object",
         "properties": {
           "name": {
@@ -64,7 +64,7 @@
         "type": "string",
         "pattern": "^0x[a-fA-F0-9]{40}$"
       },
-      "GetPredictionResult": {
+      "PredictionResponse": {
         "type": "object",
         "properties": {
           "code": {
@@ -78,7 +78,150 @@
           "code"
         ]
       },
-      "GetHodlerResult": {
+      "HodlerResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "number"
+          },
+          "result": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "code"
+        ]
+      },
+      "address": {
+        "type": "string",
+        "pattern": "^0x[a-fA-F0-9]{40}$"
+      },
+      "HodlC1Response": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "number"
+          },
+          "result": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "code"
+        ]
+      },
+      "HodlC1XTokenRequest": {
+        "type": "object",
+        "properties": {
+          "address": {
+            "type": "string"
+          },
+          "mappings": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "chainId": {
+                  "type": "number"
+                },
+                "address": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "chainId",
+                "address"
+              ]
+            }
+          }
+        },
+        "required": [
+          "address"
+        ]
+      },
+      "HodlC1XTokenResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "number"
+          },
+          "result": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "code"
+        ]
+      },
+      "HodlC1XTokensRequest": {
+        "type": "object",
+        "properties": {
+          "addresses": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "address": {
+                  "type": "string"
+                },
+                "mappings": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "chainId": {
+                        "type": "number"
+                      },
+                      "address": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "chainId",
+                      "address"
+                    ]
+                  }
+                }
+              },
+              "required": [
+                "address"
+              ]
+            }
+          }
+        }
+      },
+      "HodlC1XTokensResponse": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "address": {
+              "type": "string"
+            },
+            "result": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "address"
+          ]
+        }
+      },
+      "StakeSageLResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "number"
+          },
+          "result": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "code"
+        ]
+      },
+      "StakeSageHResponse": {
         "type": "object",
         "properties": {
           "code": {
@@ -130,7 +273,7 @@
                   }
                 },
                 "schema": {
-                  "$ref": "#/components/schemas/GetChainsResult"
+                  "$ref": "#/components/schemas/ChainsResponse"
                 }
               }
             }
@@ -167,7 +310,7 @@
                   }
                 },
                 "schema": {
-                  "$ref": "#/components/schemas/GetModelsResult"
+                  "$ref": "#/components/schemas/ModelsResponse"
                 }
               }
             }
@@ -220,7 +363,7 @@
                 "examples": {
                   "available": {
                     "summary": "A prediction is available",
-                    "description": "When a prediction is available for the public address it will return a 200 code and the result",
+                    "description": "When a prediction is available for the address it will return a 200 code and the result",
                     "value": {
                       "code": 200,
                       "result": 0.32
@@ -228,7 +371,7 @@
                   },
                   "unavailable": {
                     "summary": "A prediction is not available",
-                    "description": "If there is not a prediction for the public address it will return a 204 code and a null result",
+                    "description": "If there is not a prediction for the address it will return a 204 code and a null result",
                     "value": {
                       "code": 204,
                       "result": null
@@ -236,7 +379,7 @@
                   }
                 },
                 "schema": {
-                  "$ref": "#/components/schemas/GetPredictionResult"
+                  "$ref": "#/components/schemas/PredictionResponse"
                 }
               }
             }
@@ -272,6 +415,7 @@
         "tags": [
           "Deep3"
         ],
+        "deprecated": true,
         "responses": {
           "200": {
             "description": "A prediction object",
@@ -280,7 +424,7 @@
                 "examples": {
                   "available": {
                     "summary": "A prediction is available",
-                    "description": "When a prediction is available for the public address it will return a 200 code and the result",
+                    "description": "When a prediction is available for the address it will return a 200 code and the result",
                     "value": {
                       "code": 200,
                       "result": 0.32
@@ -288,7 +432,7 @@
                   },
                   "unavailable": {
                     "summary": "A prediction is not available",
-                    "description": "If there is not a prediction for the public address it will return a 204 code and a null result",
+                    "description": "If there is not a prediction for the address it will return a 204 code and a null result",
                     "value": {
                       "code": 204,
                       "result": null
@@ -296,7 +440,295 @@
                   }
                 },
                 "schema": {
-                  "$ref": "#/components/schemas/GetHodlerResult"
+                  "$ref": "#/components/schemas/HodlerResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/hodl-c1/chain/{chainId}/account/{address}": {
+      "get": {
+        "summary": "Get a HODL-C1 prediction",
+        "description": "Will return the prediction",
+        "operationId": "getHodlC1Prediction",
+        "parameters": [
+          {
+            "name": "chainId",
+            "in": "path",
+            "description": "The chain id for the prediction",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/chainId"
+            }
+          },
+          {
+            "name": "address",
+            "in": "path",
+            "description": "The address for the account",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/address"
+            }
+          }
+        ],
+        "tags": [
+          "Deep3"
+        ],
+        "responses": {
+          "200": {
+            "description": "A prediction object",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "available": {
+                    "summary": "A prediction is available",
+                    "description": "When a prediction is available for the address it will return a 200 code and the result",
+                    "value": {
+                      "code": 200,
+                      "result": 0.32
+                    }
+                  },
+                  "unavailable": {
+                    "summary": "A prediction is not available",
+                    "description": "If there is not a prediction for the address it will return a 204 code and a null result",
+                    "value": {
+                      "code": 204,
+                      "result": null
+                    }
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/HodlC1Response"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/hodl-c1/x/token": {
+      "post": {
+        "summary": "Get a HODL-C1 cross-chain token prediction",
+        "description": "Will return the prediction",
+        "operationId": "getHodlC1XTokenPrediction",
+        "parameters": [],
+        "tags": [
+          "Deep3"
+        ],
+        "requestBody": {
+          "description": "An object with a primary token address and any mappings for different chain addresses",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/HodlC1XTokenRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "A prediction object",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "available": {
+                    "summary": "A prediction is available",
+                    "description": "When a prediction is available for the address it will return a 200 code and the result",
+                    "value": {
+                      "code": 200,
+                      "result": 32
+                    }
+                  },
+                  "unavailable": {
+                    "summary": "A prediction is not available",
+                    "description": "If there is not a prediction for the address it will return a 204 code and a null result",
+                    "value": {
+                      "code": 204,
+                      "result": null
+                    }
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/HodlC1XTokenResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/hodl-c1/x/tokens": {
+      "post": {
+        "summary": "Get HODL-C1 cross-chain token predictions",
+        "description": "Will return the predictions",
+        "operationId": "getHodlC1XTokenPredictions",
+        "parameters": [],
+        "tags": [
+          "Deep3"
+        ],
+        "requestBody": {
+          "description": "An array of objects with a primary token address and any mappings for different chain addresses",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/HodlC1XTokensRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "A prediction object",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "available": {
+                    "summary": "A prediction is available",
+                    "description": "When a prediction is available for an address it will return a result",
+                    "value": [
+                      {
+                        "address": "0x0000000000000000000000000000000000000000",
+                        "result": 32
+                      }
+                    ]
+                  },
+                  "unavailable": {
+                    "summary": "A prediction is not available",
+                    "description": "If there is not a prediction for an address it will return a null result",
+                    "value": [
+                      {
+                        "address": "0x0000000000000000000000000000000000000000",
+                        "result": null
+                      }
+                    ]
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/HodlC1XTokensResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/stakesage-l/chain/{chainId}/account/{address}": {
+      "get": {
+        "summary": "Get a StakeSage-L prediction",
+        "description": "Will return the prediction",
+        "operationId": "getStakeSageLPrediction",
+        "parameters": [
+          {
+            "name": "chainId",
+            "in": "path",
+            "description": "The chain id for the prediction",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/chainId"
+            }
+          },
+          {
+            "name": "address",
+            "in": "path",
+            "description": "The address for the account",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/address"
+            }
+          }
+        ],
+        "tags": [
+          "Deep3"
+        ],
+        "responses": {
+          "200": {
+            "description": "A prediction object",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "available": {
+                    "summary": "A prediction is available",
+                    "description": "When a prediction is available for the address it will return a 200 code and the result",
+                    "value": {
+                      "code": 200,
+                      "result": 0.32
+                    }
+                  },
+                  "unavailable": {
+                    "summary": "A prediction is not available",
+                    "description": "If there is not a prediction for the address it will return a 204 code and a null result",
+                    "value": {
+                      "code": 204,
+                      "result": null
+                    }
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/StakeSageLResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/stakesage-h/chain/{chainId}/account/{address}": {
+      "get": {
+        "summary": "Get a StakeSage-H prediction",
+        "description": "Will return the prediction",
+        "operationId": "getStakeSageHPrediction",
+        "parameters": [
+          {
+            "name": "chainId",
+            "in": "path",
+            "description": "The chain id for the prediction",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/chainId"
+            }
+          },
+          {
+            "name": "address",
+            "in": "path",
+            "description": "The address for the account",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/address"
+            }
+          }
+        ],
+        "tags": [
+          "Deep3"
+        ],
+        "responses": {
+          "200": {
+            "description": "A prediction object",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "available": {
+                    "summary": "A prediction is available",
+                    "description": "When a prediction is available for the address it will return a 200 code and the result",
+                    "value": {
+                      "code": 200,
+                      "result": 0.32
+                    }
+                  },
+                  "unavailable": {
+                    "summary": "A prediction is not available",
+                    "description": "If there is not a prediction for the address it will return a 204 code and a null result",
+                    "value": {
+                      "code": 204,
+                      "result": null
+                    }
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/StakeSageHResponse"
                 }
               }
             }

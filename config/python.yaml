@@ -3,4 +3,4 @@ outputDir: ../deep3-python-client
 generatorName: python-nextgen
 additionalProperties:
   packageName: deep3
-  packageVersion: 0.0.2
+  packageVersion: 0.0.3

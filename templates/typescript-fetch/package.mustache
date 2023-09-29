@@ -29,7 +29,7 @@
   ],
   "scripts": {
     "clean": "rimraf dist",
-    "generate:docs": "npx typedoc --plugin typedoc-plugin-markdown --out docs src/index.ts && rm docs/README.md",
+    "generate:docs": "npx typedoc --plugin typedoc-plugin-markdown --out docs src/index.ts",
     "build": "npm run clean && tsc{{#supportsES6}} && tsc -p tsconfig.esm.json{{/supportsES6}}",
     "prepublishOnly": "npm run build"
   },
