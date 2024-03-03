@@ -2,7 +2,7 @@ openapi: 3.0.3
 info:
   title: Deep3 Labs API
   description: ''
-  version: v0.0.3
+  version: v0.0.4
 components:
   securitySchemes:
     ApiKey:
@@ -11,32 +11,36 @@ components:
       in: header
   schemas:
     ChainsResponse:
-      type: object
-      properties:
-        chainId:
-          type: number
-        name:
-          type: string
-        models:
-          type: array
-          items:
-            type: string
-      required:
-        - chainId
-        - name
-        - models
-    ModelsResponse:
-      type: object
-      properties:
-        name:
-          type: string
-        chains:
-          type: array
-          items:
+      type: array
+      items:
+        type: object
+        properties:
+          chainId:
             type: number
-      required:
-        - name
-        - chains
+          name:
+            type: string
+          models:
+            type: array
+            items:
+              type: string
+        required:
+          - chainId
+          - name
+          - models
+    ModelsResponse:
+      type: array
+      items:
+        type: object
+        properties:
+          model:
+            type: string
+          chains:
+            type: array
+            items:
+              type: number
+        required:
+          - model
+          - chains
     model:
       type: string
     chainId:
@@ -45,15 +49,6 @@ components:
       type: string
       pattern: ^0x[a-fA-F0-9]{40}$
     PredictionResponse:
-      type: object
-      properties:
-        code:
-          type: number
-        result:
-          type: number
-      required:
-        - code
-    HodlerResponse:
       type: object
       properties:
         code:
@@ -147,6 +142,33 @@ components:
       required:
         - code
     StakeSageHResponse:
+      type: object
+      properties:
+        code:
+          type: number
+        result:
+          type: number
+      required:
+        - code
+    StakeSageCResponse:
+      type: object
+      properties:
+        code:
+          type: number
+        result:
+          type: number
+      required:
+        - code
+    DeepShieldFrResponse:
+      type: object
+      properties:
+        code:
+          type: number
+        result:
+          type: number
+      required:
+        - code
+    DeepShieldHftResponse:
       type: object
       properties:
         code:
@@ -259,51 +281,6 @@ paths:
                     result: null
               schema:
                 $ref: '#/components/schemas/PredictionResponse'
-  /hodler/{chainId}/{publicAddress}:
-    get:
-      summary: Get a Hodler prediction
-      description: Will return the prediction
-      operationId: getHodlerPrediction
-      parameters:
-        - name: chainId
-          in: path
-          description: The chain id for the prediction
-          required: true
-          schema:
-            $ref: '#/components/schemas/chainId'
-        - name: publicAddress
-          in: path
-          description: The public address for the wallet
-          required: true
-          schema:
-            $ref: '#/components/schemas/publicAddress'
-      tags:
-        - Deep3
-      deprecated: true
-      responses:
-        '200':
-          description: A prediction object
-          content:
-            application/json:
-              examples:
-                available:
-                  summary: A prediction is available
-                  description: >-
-                    When a prediction is available for the address it will
-                    return a 200 code and the result
-                  value:
-                    code: 200
-                    result: 0.32
-                unavailable:
-                  summary: A prediction is not available
-                  description: >-
-                    If there is not a prediction for the address it will return
-                    a 204 code and a null result
-                  value:
-                    code: 204
-                    result: null
-              schema:
-                $ref: '#/components/schemas/HodlerResponse'
   /hodl-c1/chain/{chainId}/account/{address}:
     get:
       summary: Get a HODL-C1 prediction
@@ -518,6 +495,138 @@ paths:
                     result: null
               schema:
                 $ref: '#/components/schemas/StakeSageHResponse'
+  /stakesage-c/chain/{chainId}/account/{address}:
+    get:
+      summary: Get a StakeSage-C prediction
+      description: Will return the prediction
+      operationId: getStakeSageCPrediction
+      parameters:
+        - name: chainId
+          in: path
+          description: The chain id for the prediction
+          required: true
+          schema:
+            $ref: '#/components/schemas/chainId'
+        - name: address
+          in: path
+          description: The address for the account
+          required: true
+          schema:
+            $ref: '#/components/schemas/address'
+      tags:
+        - Deep3
+      responses:
+        '200':
+          description: A prediction object
+          content:
+            application/json:
+              examples:
+                available:
+                  summary: A prediction is available
+                  description: >-
+                    When a prediction is available for the address it will
+                    return a 200 code and the result
+                  value:
+                    code: 200
+                    result: 0.32
+                unavailable:
+                  summary: A prediction is not available
+                  description: >-
+                    If there is not a prediction for the address it will return
+                    a 204 code and a null result
+                  value:
+                    code: 204
+                    result: null
+              schema:
+                $ref: '#/components/schemas/StakeSageCResponse'
+  /deepshield-fr/chain/{chainId}/account/{address}:
+    get:
+      summary: Get a DeepShield-FR prediction
+      description: Will return the prediction
+      operationId: getDeepShieldFrPrediction
+      parameters:
+        - name: chainId
+          in: path
+          description: The chain id for the prediction
+          required: true
+          schema:
+            $ref: '#/components/schemas/chainId'
+        - name: address
+          in: path
+          description: The address for the account
+          required: true
+          schema:
+            $ref: '#/components/schemas/address'
+      tags:
+        - Deep3
+      responses:
+        '200':
+          description: A prediction object
+          content:
+            application/json:
+              examples:
+                available:
+                  summary: A prediction is available
+                  description: >-
+                    When a prediction is available for the address it will
+                    return a 200 code and the result
+                  value:
+                    code: 200
+                    result: 0.32
+                unavailable:
+                  summary: A prediction is not available
+                  description: >-
+                    If there is not a prediction for the address it will return
+                    a 204 code and a null result
+                  value:
+                    code: 204
+                    result: null
+              schema:
+                $ref: '#/components/schemas/DeepShieldFrResponse'
+  /deepshield-hft/chain/{chainId}/account/{address}:
+    get:
+      summary: Get a DeepShield-HFT prediction
+      description: Will return the prediction
+      operationId: getDeepShieldHftPrediction
+      parameters:
+        - name: chainId
+          in: path
+          description: The chain id for the prediction
+          required: true
+          schema:
+            $ref: '#/components/schemas/chainId'
+        - name: address
+          in: path
+          description: The address for the account
+          required: true
+          schema:
+            $ref: '#/components/schemas/address'
+      tags:
+        - Deep3
+      responses:
+        '200':
+          description: A prediction object
+          content:
+            application/json:
+              examples:
+                available:
+                  summary: A prediction is available
+                  description: >-
+                    When a prediction is available for the address it will
+                    return a 200 code and the result
+                  value:
+                    code: 200
+                    result: 0.32
+                unavailable:
+                  summary: A prediction is not available
+                  description: >-
+                    If there is not a prediction for the address it will return
+                    a 204 code and a null result
+                  value:
+                    code: 204
+                    result: null
+              schema:
+                $ref: '#/components/schemas/DeepShieldHftResponse'
 servers:
   - url: https://api.deep3.ai/v0/
     description: live
